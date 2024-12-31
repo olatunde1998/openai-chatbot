@@ -35,7 +35,7 @@ export default function Chatbot() {
     stop,
     reload,
     error,
-  } = useChat({ api: "/api/gemini" });
+  } = useChat({ api: "/api/openai" });
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
