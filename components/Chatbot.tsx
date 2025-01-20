@@ -21,6 +21,13 @@ import {
 } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
+import { Components } from "react-markdown";
+
+interface CodeProps {
+  inline?: boolean;
+  className?: string;
+  children?: React.ReactNode;
+}
 
 export default function Chatbot() {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -65,6 +72,22 @@ export default function Chatbot() {
       scrollRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
+
+  const MarkdownComponents: Components = {
+    code: ({ inline, children, ...props }: CodeProps) => {
+      return inline ? (
+        <code {...props} className="bg-gray-200 px-1 rounded">
+          {children}
+        </code>
+      ) : (
+        <pre {...props} className="bg-gray-200 p-2 rounded">
+          <code>{children}</code>
+        </pre>
+      );
+    },
+    ul: ({ children }) => <ul className="list-disc ml-4">{children}</ul>,
+    ol: ({ children }) => <li className="list-decimal ml-4">{children}</li>,
+  };
 
   return (
     <div className="bg-green-400 text-black">
@@ -139,40 +162,11 @@ export default function Chatbot() {
                         }`}
                       >
                         <ReactMarkdown
-                          children={message.content}
                           remarkPlugins={[remarkGfm]}
-                          components={{
-                            code({
-                              node,
-                              inline,
-                              className,
-                              children,
-                              ...props
-                            }) {
-                              return inline ? (
-                                <code
-                                  {...props}
-                                  className="bg-gray-200 px-1 rounded"
-                                >
-                                  {children}
-                                </code>
-                              ) : (
-                                <pre
-                                  {...props}
-                                  className="bg-gray-200 p-2 rounded"
-                                >
-                                  <code>{children}</code>
-                                </pre>
-                              );
-                            },
-                            ul: ({ children }) => (
-                              <ul className="list-disc ml-4">{children}</ul>
-                            ),
-                            ol: ({ children }) => (
-                              <li className="list-decimal ml-4">{children}</li>
-                            ),
-                          }}
-                        />
+                          components={MarkdownComponents}
+                        >
+                          {message.content}
+                        </ReactMarkdown>
                       </div>
                     </div>
                   ))}
