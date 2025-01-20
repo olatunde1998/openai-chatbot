@@ -126,7 +126,7 @@ export default function Chatbot() {
             <Card className="border-2">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
                 <CardTitle className="text-lg font-bold">
-                  Chat with Geomatic Connect AI
+                  Chat with NoteWorthy AI
                 </CardTitle>
                 <Button
                   onClick={toggleChat}
